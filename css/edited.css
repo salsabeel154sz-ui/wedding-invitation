@@ -5,11 +5,20 @@ body {
 body * {
   font-family: 'Aref Ruqaa', serif !important;
 }
-.wedding-logo {
-  display: block;
-  width: 65px;
-  max-width: 65px;
-  height: auto;
-  object-fit: contain;
-  margin: 0 auto;
+.monogram {
+  width: 90px !important;
+  height: 90px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.monogram img.wedding-logo {
+  display: block !important;
+  width: 55px !important;
+  height: 55px !important;
+  max-width: 55px !important;
+  max-height: 55px !important;
+  object-fit: contain !important;
 }
