@@ -567,15 +567,17 @@ section { padding: 5.5rem 1.5rem; }
   .monogram, .hero-names { animation: none; }
   .scroll-hint span { animation: none; }
 }
-/* Arabic typography */
+/* Soft Arabic wedding font */
 :lang(ar) {
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Aref Ruqaa', serif !important;
 }
 
 :lang(ar) h1,
 :lang(ar) h2,
 :lang(ar) h3,
-:lang(ar) .script-title,
-:lang(ar) .footer-names {
-  font-family: 'Amiri', serif;
+:lang(ar) p,
+:lang(ar) span,
+:lang(ar) a,
+:lang(ar) button {
+  font-family: 'Aref Ruqaa', serif !important;
 }
