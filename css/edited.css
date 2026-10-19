@@ -3,3 +3,6 @@
    even if a future export were incomplete.
 
    Empty until you press "Save to project" in the editor. */
+body {
+  font-family: 'Aref Ruqaa', serif !important;
+}
