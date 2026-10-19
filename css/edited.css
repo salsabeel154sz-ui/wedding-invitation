@@ -5,3 +5,11 @@ body {
 body * {
   font-family: 'Aref Ruqaa', serif !important;
 }
+.wedding-logo {
+  display: block;
+  width: 65px;
+  max-width: 65px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
