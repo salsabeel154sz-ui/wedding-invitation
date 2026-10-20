@@ -24,21 +24,24 @@ body * {
   transform: scale(1.2) !important;
 }
 /* Soft purple wedding frame */
-body {
+html {
   background-color: #fcf9ff !important;
-  background-image: none !important;
+}
+
+body {
+  position: relative;
+  z-index: 0;
+  background-color: transparent !important;
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("../سلس.png");
+  background-image: url("../%D8%B3%D9%84%D8%B3.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: -1;
 }
