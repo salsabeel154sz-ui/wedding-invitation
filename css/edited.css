@@ -53,3 +53,18 @@ body * {
   text-align: center !important;
   margin: 12px 8px !important;
 }
+/* خلفية الساتان لدعوة الزفاف */
+html {
+  min-height: 100%;
+  background-color: #f6f0e9;
+}
+
+body {
+  background-color: transparent;
+  background-image: url("../background.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
