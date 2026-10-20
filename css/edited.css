@@ -23,26 +23,7 @@ body * {
   object-fit: contain !important;
   transform: scale(1.2) !important;
 }
-/* Soft purple wedding frame */
-html {
-  background-color: #fcf9ff !important;
-}
 
-body {
-  background-color: transparent !important;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("../%D8%B3%D9%84%D8%B3.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 200%;
-  pointer-events: none;
-  z-index: 9999;
-}
 /* Wedding invitation intro */
 .invitation-intro {
   font-size: 32px !important;
