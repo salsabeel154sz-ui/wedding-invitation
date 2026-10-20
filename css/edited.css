@@ -43,3 +43,11 @@ body::after {
   pointer-events: none;
   z-index: 9999;
 }
+/* Wedding invitation intro */
+.invitation-intro {
+  font-size: 32px !important;
+  line-height: 1.8 !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  margin: 25px 15px !important;
+}
