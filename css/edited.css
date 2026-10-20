@@ -6,8 +6,8 @@ body * {
   font-family: 'Aref Ruqaa', serif !important;
 }
 .monogram {
-  width: 120px !important;
-  height: 120px !important;
+  width: 145px !important;
+  height: 145px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -16,9 +16,9 @@ body * {
 
 .monogram img.wedding-logo {
   display: block !important;
-  width: 85px !important;
-  height: 85px !important;
-  max-width: 85px !important;
-  max-height: 85px !important;
+  width: 105px !important;
+  height: 105px !important;
+  max-width: 105px !important;
+  max-height: 105px !important;
   object-fit: contain !important;
 }
