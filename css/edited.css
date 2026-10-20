@@ -37,3 +37,19 @@ body * {
   overflow-wrap: anywhere !important;
   word-break: normal !important;
 }
+/* تكبير اسم القاعة والتاريخ */
+.event-venue {
+  font-size: clamp(28px, 7vw, 38px) !important;
+  font-weight: 700 !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+  margin: 16px 8px !important;
+}
+
+.event-address {
+  font-size: clamp(23px, 6vw, 32px) !important;
+  font-weight: 600 !important;
+  line-height: 1.7 !important;
+  text-align: center !important;
+  margin: 12px 8px !important;
+}
