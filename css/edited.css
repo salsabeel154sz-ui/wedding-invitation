@@ -33,3 +33,36 @@ body {
   background-repeat: no-repeat;
   background-size: 180px 180px;
 }
+/* Make botanical corners more visible */
+body {
+  background-color: #fbf8f1 !important;
+  background-size: 260px 260px !important;
+  background-position: left top, right bottom !important;
+  background-repeat: no-repeat !important;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 1;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+body::before {
+  top: 0;
+  left: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%23b39450' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M0 145 Q30 100 18 10 M10 115 Q48 110 62 75 M18 55 Q48 60 57 35 M18 10 Q48 20 70 8 M10 115 Q35 140 30 160'/%3E%3C/g%3E%3Cg fill='%23a6b69a'%3E%3Cellipse cx='38' cy='105' rx='7' ry='18' transform='rotate(50 38 105)'/%3E%3Cellipse cx='36' cy='53' rx='7' ry='17' transform='rotate(-45 36 53)'/%3E%3Cellipse cx='57' cy='22' rx='7' ry='17' transform='rotate(55 57 22)'/%3E%3Cellipse cx='24' cy='135' rx='7' ry='17' transform='rotate(-35 24 135)'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+body::after {
+  right: 0;
+  bottom: 0;
+  transform: rotate(180deg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%23b39450' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M0 145 Q30 100 18 10 M10 115 Q48 110 62 75 M18 55 Q48 60 57 35 M18 10 Q48 20 70 8 M10 115 Q35 140 30 160'/%3E%3C/g%3E%3Cg fill='%23a6b69a'%3E%3Cellipse cx='38' cy='105' rx='7' ry='18' transform='rotate(50 38 105)'/%3E%3Cellipse cx='36' cy='53' rx='7' ry='17' transform='rotate(-45 36 53)'/%3E%3Cellipse cx='57' cy='22' rx='7' ry='17' transform='rotate(55 57 22)'/%3E%3Cellipse cx='24' cy='135' rx='7' ry='17' transform='rotate(-35 24 135)'/%3E%3C/g%3E%3C/svg%3E");
+}
