@@ -29,12 +29,10 @@ html {
 }
 
 body {
-  position: relative;
-  z-index: 0;
   background-color: transparent !important;
 }
 
-body::before {
+body::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -43,5 +41,5 @@ body::before {
   background-position: center;
   background-size: 100% 100%;
   pointer-events: none;
-  z-index: -1;
+  z-index: 9999;
 }
