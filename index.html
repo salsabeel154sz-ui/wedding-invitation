@@ -73,7 +73,8 @@
 
     <!-- ═══════════ COUNTDOWN ═══════════ -->
     <section class="countdown reveal" aria-label="Countdown to the wedding">
-<h2 class="script-title">لم يتبقَّ الكثير...</h2>
+<h2 class="script-title">موعد فرحتنا يقترب</h2>
+<p>Countdown to our wedding day</p>
 
 <p>Counting down to our special day</p>
       <div class="countdown-grid" id="countdown">
@@ -113,58 +114,7 @@
       <p class="gallery-credit">Placeholder photos · Unsplash</p>
     </section>
 
-    <!-- ═══════════ RSVP ═══════════ -->
-    <section class="rsvp reveal" id="rsvp">
-      <h2 class="rsvp-title">Confirm your attendance</h2>
-      <!-- CUSTOMIZE: the RSVP deadline -->
-      <p class="rsvp-subtitle">
-        Please confirm by 17 May 2028 ,
-        and join us for a day of celebration, music, and joy!
-      </p>
-
-      <!-- This form is "static": on submit it opens the guest's email app
-           with the message already written. See the README for
-           alternatives (Formspree, Tally, Google Form) to receive
-           responses automatically. -->
-      <form id="rsvp-form" novalidate>
-        <div class="field-row">
-          <div class="field">
-            <label for="first-name">First name</label>
-            <input type="text" id="first-name" name="first-name" autocomplete="given-name" required>
-          </div>
-          <div class="field">
-            <label for="last-name">Last name</label>
-            <input type="text" id="last-name" name="last-name" autocomplete="family-name" required>
-          </div>
-        </div>
-
-        <fieldset class="field-choice">
-          <legend>Will you be joining us?</legend>
-          <div class="choices">
-            <label class="chip"><input type="radio" name="attending" value="Yes" checked><span>Yes</span></label>
-            <label class="chip"><input type="radio" name="attending" value="No"><span>No</span></label>
-          </div>
-        </fieldset>
-
-        <div class="field">
-          <label for="guests">Number of guests with me</label>
-          <input type="number" id="guests" name="guests" min="0" max="10" value="0">
-        </div>
-
-        <div class="field">
-          <label for="guest-names">Names of guests with me</label>
-          <input type="text" id="guest-names" name="guest-names" placeholder="">
-        </div>
-
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="3"></textarea>
-        </div>
-
-        <button type="submit" class="btn-confirm">Confirm</button>
-        <p class="rsvp-note" id="rsvp-note" hidden></p>
-      </form>
-    </section>
+  
 
     <!-- ═══════════ QUOTE ═══════════ -->
     <section class="quote reveal">
