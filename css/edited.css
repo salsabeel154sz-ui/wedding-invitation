@@ -26,9 +26,14 @@ body * {
 
 /* Wedding invitation intro */
 .invitation-intro {
-  font-size: 32px !important;
-  line-height: 1.8 !important;
+  font-size: clamp(28px, 7vw, 42px) !important;
+  line-height: 1.7 !important;
   text-align: center !important;
   font-weight: 700 !important;
-  margin: 25px 15px !important;
+  margin: 30px 12px !important;
+  padding: 0 8px !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
 }
