@@ -1,17 +1,16 @@
 /* ═══════════════════════════════════════════════════════════════
-   WEDDING INVITE, script
-   Countdown, scroll animations, gallery, RSVP.
+   WEDDING INVITATION
+   Countdown, scroll animations, gallery, music and auto-scroll
    ═══════════════════════════════════════════════════════════════ */
 
-/* CUSTOMIZE: date and time of the ceremony (used by the countdown).
-   "+01:00" is British Summer Time, adjust for your own timezone. */
+/* تاريخ ووقت الزفاف */
 const WEDDING_DATE = new Date("2026-11-02T17:00:00+02:00");
 
-/* CUSTOMIZE: the email address RSVPs are sent to, when the form uses
-   the "mailto" mode (the default). */
+/* البريد الإلكتروني */
 const COUPLE_EMAIL = "emma.james@example.com";
 
-/* ── Countdown ────────────────────────────────────────────────── */
+
+/* ── Countdown ───────────────────────────────────────────────── */
 
 const cd = {
   days: document.getElementById("cd-days"),
@@ -21,57 +20,95 @@ const cd = {
 };
 
 function updateCountdown() {
+  const countdown = document.getElementById("countdown");
   const diff = WEDDING_DATE - new Date();
 
   if (diff <= 0) {
-    document.getElementById("countdown").innerHTML =
-      '<p class="cd-today" style="font-style:italic">Today is the big day!</p>';
+    if (countdown) {
+      countdown.innerHTML =
+        '<p class="cd-today" style="font-style:italic">Today is the big day!</p>';
+    }
     clearInterval(countdownTimer);
     return;
   }
 
   const sec = Math.floor(diff / 1000);
-  cd.days.textContent = Math.floor(sec / 86400);
-  cd.hours.textContent = String(Math.floor((sec % 86400) / 3600)).padStart(2, "0");
-  cd.minutes.textContent = String(Math.floor((sec % 3600) / 60)).padStart(2, "0");
-  cd.seconds.textContent = String(sec % 60).padStart(2, "0");
+
+  if (cd.days) cd.days.textContent = Math.floor(sec / 86400);
+  if (cd.hours) {
+    cd.hours.textContent = String(
+      Math.floor((sec % 86400) / 3600)
+    ).padStart(2, "0");
+  }
+  if (cd.minutes) {
+    cd.minutes.textContent = String(
+      Math.floor((sec % 3600) / 60)
+    ).padStart(2, "0");
+  }
+  if (cd.seconds) {
+    cd.seconds.textContent = String(sec % 60).padStart(2, "0");
+  }
 }
 
 const countdownTimer = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-/* ── Gentle reveal of sections on scroll ───────────────────────── */
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.15 }
-);
+/* ── Reveal sections on scroll ───────────────────────────────── */
 
-document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
 
-/* ── Gallery: lightbox ────────────────────────────────────────── */
+  document.querySelectorAll(".reveal").forEach((el) => {
+    observer.observe(el);
+  });
+} else {
+  document.querySelectorAll(".reveal").forEach((el) => {
+    el.classList.add("visible");
+  });
+}
+
+
+/* ── Gallery: lightbox ───────────────────────────────────────── */
 
 const lightbox = document.getElementById("lightbox");
-const lightboxImg = lightbox.querySelector("img");
 
-document.querySelectorAll(".gallery-grid img").forEach((img) => {
-  img.addEventListener("click", () => {
-    lightboxImg.src = img.src;
-    lightboxImg.alt = img.alt;
-    lightbox.showModal();
+if (lightbox) {
+  const lightboxImg = lightbox.querySelector("img");
+
+  if (lightboxImg) {
+    document.querySelectorAll(".gallery-grid img").forEach((img) => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+
+        if (typeof lightbox.showModal === "function") {
+          lightbox.showModal();
+        }
+      });
+    });
+  }
+
+  lightbox.addEventListener("click", () => {
+    if (typeof lightbox.close === "function" && lightbox.open) {
+      lightbox.close();
+    }
   });
-});
+}
 
-lightbox.addEventListener("click", () => lightbox.close());
 
-/* تشغيل الموسيقى من الثانية 8 والتمرير التلقائي */
+/* ── Music and automatic scrolling ───────────────────────────── */
+
 (() => {
   const welcome = document.getElementById("welcome-screen");
   const openButton = document.getElementById("open-invitation");
@@ -79,14 +116,19 @@ lightbox.addEventListener("click", () => lightbox.close());
   const controls = document.getElementById("invitation-controls");
   const musicButton = document.getElementById("toggle-music");
 
-  if (!welcome || !openButton || !music || !musicButton) return;
+  if (!welcome || !openButton || !music || !musicButton) {
+    console.warn("Invitation controls or music elements were not found.");
+    return;
+  }
 
   let scrolling = false;
   let animationFrame = null;
   let lastTime = 0;
   let musicStarted = false;
   let lastTouchY = null;
+  let userInterruptedScroll = false;
 
+  /* إيقاف التمرير التلقائي */
   function stopScrolling() {
     scrolling = false;
 
@@ -94,57 +136,86 @@ lightbox.addEventListener("click", () => lightbox.close());
       cancelAnimationFrame(animationFrame);
       animationFrame = null;
     }
+
+    lastTime = 0;
   }
 
-let scrolling = false;
-let animationFrame = null;
-let lastTime = 0;
-function scrollStep(time) {
-  if (!scrolling) return;
+  /* تحريك الصفحة تدريجيًا */
+  function scrollStep(time) {
+    if (!scrolling || userInterruptedScroll) return;
 
-  if (!lastTime) lastTime = time;
-  const elapsed = Math.min(time - lastTime, 50);
-  lastTime = time;
+    if (!lastTime) lastTime = time;
 
-  const scroller =
-    document.scrollingElement || document.documentElement;
+    const elapsed = Math.min(time - lastTime, 50);
+    lastTime = time;
 
-  const maxScroll = scroller.scrollHeight - window.innerHeight;
-  const currentPosition = scroller.scrollTop;
+    const scroller = document.scrollingElement;
 
-  if (currentPosition >= maxScroll - 2) {
+    if (!scroller) {
+      stopScrolling();
+      return;
+    }
+
+    const maxScroll = Math.max(
+      0,
+      scroller.scrollHeight - window.innerHeight
+    );
+
+    const currentPosition = scroller.scrollTop;
+
+    if (currentPosition >= maxScroll - 2) {
+      stopScrolling();
+      return;
+    }
+
+    /* السرعة: كلما قل الرقم أصبح التمرير أبطأ */
+    const nextPosition = Math.min(
+      currentPosition + elapsed * 0.035,
+      maxScroll
+    );
+
+    scroller.scrollTop = nextPosition;
+
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  /* بدء التمرير */
+  function startScrolling() {
     stopScrolling();
-    return;
+    userInterruptedScroll = false;
+    scrolling = true;
+    lastTime = 0;
+
+    animationFrame = requestAnimationFrame(scrollStep);
   }
 
-  scroller.scrollTop = Math.min(
-    currentPosition + elapsed * 0.05,
-    maxScroll
-  );
-
-  animationFrame = requestAnimationFrame(scrollStep);
-}
-
-function startScrolling() {
-  stopScrolling();
-  scrolling = true;
-  lastTime = 0;
-  animationFrame = requestAnimationFrame(scrollStep);
-}
+  /* تشغيل الموسيقى من الثانية 8 */
   async function playMusic() {
     try {
       if (!musicStarted) {
         if (music.readyState < 1) {
           await new Promise((resolve, reject) => {
-            music.addEventListener("loadedmetadata", resolve, { once: true });
-            music.addEventListener("error", reject, { once: true });
+            music.addEventListener("loadedmetadata", resolve, {
+              once: true,
+            });
+
+            music.addEventListener("error", reject, {
+              once: true,
+            });
+
+            music.load();
           });
         }
 
-        music.currentTime = 8;
+        if (Number.isFinite(music.duration) && music.duration > 8) {
+          music.currentTime = 8;
+        } else {
+          music.currentTime = 0;
+        }
       }
 
       await music.play();
+
       musicStarted = true;
       musicButton.textContent = "♫ إيقاف الموسيقى";
     } catch (error) {
@@ -153,15 +224,19 @@ function startScrolling() {
     }
   }
 
- openButton.addEventListener("click", () => {
-  welcome.classList.add("is-hidden");
+  /* فتح الدعوة */
+  openButton.addEventListener("click", () => {
+    welcome.classList.add("is-hidden");
 
-  if (controls) controls.hidden = false;
+    if (controls) {
+      controls.hidden = false;
+    }
 
-  startScrolling();
-  playMusic();
-});
+    startScrolling();
+    playMusic();
+  });
 
+  /* زر تشغيل وإيقاف الموسيقى */
   musicButton.addEventListener("click", async () => {
     if (!music.paused) {
       music.pause();
@@ -171,30 +246,71 @@ function startScrolling() {
     }
   });
 
+  /* إعادة الموسيقى من الثانية 8 عند انتهائها */
   music.addEventListener("ended", async () => {
-    music.currentTime = 8;
+    musicStarted = false;
     await playMusic();
   });
 
-  window.addEventListener("wheel", stopScrolling, { passive: true });
+  /* إيقاف التمرير إذا اختارت الزائرة تحريك الصفحة بنفسها */
+  window.addEventListener(
+    "wheel",
+    () => {
+      userInterruptedScroll = true;
+      stopScrolling();
+    },
+    { passive: true }
+  );
 
-  window.addEventListener("touchstart", (event) => {
-    lastTouchY = event.touches[0].clientY;
-  }, { passive: true });
+  window.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length > 0) {
+        lastTouchY = event.touches[0].clientY;
+      }
+    },
+    { passive: true }
+  );
 
-  window.addEventListener("touchmove", (event) => {
-    if (lastTouchY === null) return;
+  window.addEventListener(
+    "touchmove",
+    (event) => {
+      if (lastTouchY === null || event.touches.length === 0) return;
 
-    const currentY = event.touches[0].clientY;
+      const currentY = event.touches[0].clientY;
 
-    if (Math.abs(currentY - lastTouchY) > 10) {
+      if (Math.abs(currentY - lastTouchY) > 10) {
+        userInterruptedScroll = true;
+        stopScrolling();
+      }
+
+      lastTouchY = currentY;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "touchend",
+    () => {
+      lastTouchY = null;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("keydown", (event) => {
+    const scrollKeys = [
+      "ArrowDown",
+      "ArrowUp",
+      "PageDown",
+      "PageUp",
+      "Home",
+      "End",
+      " ",
+    ];
+
+    if (scrollKeys.includes(event.key)) {
+      userInterruptedScroll = true;
       stopScrolling();
     }
-
-    lastTouchY = currentY;
-  }, { passive: true });
-
-  window.addEventListener("touchend", () => {
-    lastTouchY = null;
-  }, { passive: true });
+  });
 })();
