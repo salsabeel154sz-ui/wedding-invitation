@@ -96,27 +96,32 @@ lightbox.addEventListener("click", () => lightbox.close());
     }
   }
 
-  function scrollStep(time) {
-    if (!scrolling) return;
+let previousFrameTime = 0;
 
-    if (!lastTime) lastTime = time;
+function scrollStep(time) {
+  if (!scrolling) return;
 
-    const delta = Math.min(time - lastTime, 50);
-    lastTime = time;
+  if (!previousFrameTime) previousFrameTime = time;
 
-    const maxScroll = Math.max(
-      document.documentElement.scrollHeight,
-      document.body.scrollHeight
-    ) - window.innerHeight;
+  const elapsed = Math.min(time - previousFrameTime, 50);
+  previousFrameTime = time;
 
-    if (window.scrollY >= maxScroll - 2) {
-      stopScrolling();
-      return;
-    }
+  const maxScroll =
+    document.documentElement.scrollHeight - window.innerHeight;
 
-   window.scrollTo(0, window.scrollY + delta * 0.12);
-    animationFrame = requestAnimationFrame(scrollStep);
+  if (window.scrollY >= maxScroll - 2) {
+    stopScrolling();
+    return;
   }
+
+  const nextPosition = Math.min(
+    window.scrollY + elapsed * 0.04,
+    maxScroll
+  );
+
+  window.scrollTo(0, nextPosition);
+  animationFrame = requestAnimationFrame(scrollStep);
+}
 
 function startScrolling() {
   stopScrolling();
