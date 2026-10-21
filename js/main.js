@@ -102,7 +102,7 @@ lightbox.addEventListener("click", () => lightbox.close());
     const delta = Math.min(time - lastTime, 50);
     lastTime = time;
 
-    window.scrollBy(0, delta * 0.025);
+    window.scrollBy(0, delta * 0.12);
 
     const atBottom =
       window.innerHeight + window.scrollY >=
