@@ -583,3 +583,13 @@ section { padding: 5.5rem 1.5rem; }
 :lang(ar) button {
   font-family: 'Aref Ruqaa', serif !important;
 }
+/* تحسين سلاسة العرض على الآيفون */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
