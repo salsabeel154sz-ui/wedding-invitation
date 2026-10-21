@@ -180,14 +180,19 @@ if (lightbox) {
   }
 
   /* بدء التمرير */
-  function startScrolling() {
-    stopScrolling();
-    userInterruptedScroll = false;
-    scrolling = true;
-    lastTime = 0;
+ function startScrolling() {
+  stopScrolling();
+  userInterruptedScroll = false;
+  scrolling = true;
+  lastTime = 0;
 
+  function begin() {
+    if (!scrolling) return;
     animationFrame = requestAnimationFrame(scrollStep);
   }
+
+  begin();
+}
 
   /* تشغيل الموسيقى من الثانية 8 */
   async function playMusic() {
