@@ -96,42 +96,41 @@ lightbox.addEventListener("click", () => lightbox.close());
     }
   }
 
-let previousFrameTime = 0;
-
+let scrolling = false;
+let animationFrame = null;
+let lastTime = 0;
 function scrollStep(time) {
   if (!scrolling) return;
 
-  if (!previousFrameTime) previousFrameTime = time;
+  if (!lastTime) lastTime = time;
+  const elapsed = Math.min(time - lastTime, 50);
+  lastTime = time;
 
-  const elapsed = Math.min(time - previousFrameTime, 50);
-  previousFrameTime = time;
+  const scroller =
+    document.scrollingElement || document.documentElement;
 
-  const maxScroll =
-    document.documentElement.scrollHeight - window.innerHeight;
+  const maxScroll = scroller.scrollHeight - window.innerHeight;
+  const currentPosition = scroller.scrollTop;
 
-  if (window.scrollY >= maxScroll - 2) {
+  if (currentPosition >= maxScroll - 2) {
     stopScrolling();
     return;
   }
 
-  const nextPosition = Math.min(
-    window.scrollY + elapsed * 0.04,
+  scroller.scrollTop = Math.min(
+    currentPosition + elapsed * 0.05,
     maxScroll
   );
 
-  window.scrollTo(0, nextPosition);
   animationFrame = requestAnimationFrame(scrollStep);
 }
 
 function startScrolling() {
   stopScrolling();
-
   scrolling = true;
   lastTime = 0;
-
   animationFrame = requestAnimationFrame(scrollStep);
 }
-
   async function playMusic() {
     try {
       if (!musicStarted) {
