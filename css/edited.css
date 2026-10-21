@@ -189,3 +189,43 @@ body {
 .welcome-screen.is-hidden {
   display: none;
 }
+/* توحيد لون الخطوط في دعوة الزفاف */
+:root {
+  --wedding-text-purple: #715b70;
+}
+
+body,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+body p,
+body span,
+body li,
+body label,
+body a,
+body time,
+body strong,
+body em,
+body small,
+body blockquote,
+body figcaption {
+  color: var(--wedding-text-purple);
+}
+
+/* أزرار الدعوة */
+body button,
+body .button,
+body input,
+body textarea,
+body select {
+  color: var(--wedding-text-purple);
+}
+
+/* الحفاظ على لون حدود زر الموسيقى */
+#toggle-music {
+  color: var(--wedding-text-purple);
+  border-color: #bca4bc;
+}
