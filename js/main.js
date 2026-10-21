@@ -95,41 +95,49 @@ lightbox.addEventListener("click", () => lightbox.close());
     }
   }
 
-  function scrollStep(time) {
-    if (!scrolling) return;
+function scrollStep(time) {
+  if (!scrolling) return;
 
-    if (!lastTime) lastTime = time;
+  if (!lastTime) lastTime = time;
 
-    const delta = Math.min(time - lastTime, 50);
-    lastTime = time;
+  const delta = Math.min(time - lastTime, 50);
+  lastTime = time;
 
-    window.scrollTo(0, window.scrollY + delta * 0.12);
+  const currentPosition =
+    window.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0;
 
-    const atBottom =
-      window.scrollY + window.innerHeight >=
-      document.documentElement.scrollHeight - 3;
+  window.scrollTo(0, currentPosition + delta * 0.12);
 
-    if (atBottom) {
-      stopScrolling();
-      return;
-    }
+  const maxScroll =
+    Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight
+    ) - window.innerHeight;
 
-    animationFrame = requestAnimationFrame(scrollStep);
-  }
-
-  function startScrolling() {
+  if (currentPosition >= maxScroll - 3) {
     stopScrolling();
-
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-
-    scrolling = true;
-    lastTime = 0;
-    animationFrame = requestAnimationFrame(scrollStep);
+    return;
   }
+
+  animationFrame = requestAnimationFrame(scrollStep);
+}
+
+function startScrolling() {
+  stopScrolling();
+
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return;
+  }
+
+  scrolling = true;
+  lastTime = 0;
+  animationFrame = requestAnimationFrame(scrollStep);
+}
 
  async function playMusic() {
   try {
