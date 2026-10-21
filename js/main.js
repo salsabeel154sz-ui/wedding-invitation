@@ -154,14 +154,14 @@ function startScrolling() {
     }
   }
 
-  openButton.addEventListener("click", async () => {
-    welcome.classList.add("is-hidden");
+ openButton.addEventListener("click", () => {
+  welcome.classList.add("is-hidden");
 
-    if (controls) controls.hidden = false;
+  if (controls) controls.hidden = false;
 
-    await playMusic();
-    startScrolling();
-  });
+  startScrolling();
+  playMusic();
+});
 
   musicButton.addEventListener("click", async () => {
     if (!music.paused) {
