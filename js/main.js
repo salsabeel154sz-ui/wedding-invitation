@@ -114,23 +114,18 @@ lightbox.addEventListener("click", () => lightbox.close());
       return;
     }
 
-    window.scrollBy(0, delta * 0.12);
+   window.scrollTo(0, window.scrollY + delta * 0.12);
     animationFrame = requestAnimationFrame(scrollStep);
   }
 
-  function startScrolling() {
-    stopScrolling();
+function startScrolling() {
+  stopScrolling();
 
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
+  scrolling = true;
+  lastTime = 0;
 
-    scrolling = true;
-    lastTime = 0;
-    animationFrame = requestAnimationFrame(scrollStep);
-  }
+  animationFrame = requestAnimationFrame(scrollStep);
+}
 
   async function playMusic() {
     try {
