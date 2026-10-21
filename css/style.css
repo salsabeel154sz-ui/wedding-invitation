@@ -24,7 +24,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: auto !important;
+}
 
 body {
   margin: 0;
