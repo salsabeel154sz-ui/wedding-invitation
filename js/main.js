@@ -76,7 +76,7 @@ lightbox.addEventListener("click", () => lightbox.close());
   const openButton = document.getElementById("open-invitation");
   const music = document.getElementById("wedding-music");
   const controls = document.getElementById("invitation-controls");
-  const scrollButton = document.getElementById("pause-scroll");
+  
   const musicButton = document.getElementById("toggle-music");
 
   if (!welcome || !openButton || !music) return;
@@ -92,7 +92,7 @@ lightbox.addEventListener("click", () => lightbox.close());
       cancelAnimationFrame(animationFrame);
       animationFrame = null;
     }
-    scrollButton.textContent = "متابعة الحركة";
+   
   }
 
   function scrollStep(time) {
@@ -126,7 +126,7 @@ lightbox.addEventListener("click", () => lightbox.close());
 
     scrolling = true;
     lastTime = 0;
-    scrollButton.textContent = "إيقاف الحركة";
+    
     animationFrame = requestAnimationFrame(scrollStep);
   }
 
@@ -147,13 +147,7 @@ lightbox.addEventListener("click", () => lightbox.close());
     startScrolling();
   });
 
-  scrollButton.addEventListener("click", () => {
-    if (scrolling) {
-      stopScrolling();
-    } else {
-      startScrolling();
-    }
-  });
+  
 
   musicButton.addEventListener("click", async () => {
     if (!music.paused) {
