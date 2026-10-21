@@ -172,3 +172,20 @@ body {
     transition: none;
   }
 }
+/* تحسين التمرير على الهواتف */
+html {
+  min-height: 100%;
+  overflow-x: clip;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+.welcome-screen.is-hidden {
+  display: none;
+}
