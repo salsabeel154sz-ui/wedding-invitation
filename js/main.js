@@ -85,6 +85,7 @@ lightbox.addEventListener("click", () => lightbox.close());
   let animationFrame = null;
   let lastTime = 0;
   let musicStarted = false;
+  let lastTouchY = null;
 
   function stopScrolling() {
     scrolling = false;
@@ -95,75 +96,62 @@ lightbox.addEventListener("click", () => lightbox.close());
     }
   }
 
-function scrollStep(time) {
-  if (!scrolling) return;
+  function scrollStep(time) {
+    if (!scrolling) return;
 
-  if (!lastTime) lastTime = time;
+    if (!lastTime) lastTime = time;
 
-  const delta = Math.min(time - lastTime, 50);
-  lastTime = time;
+    const delta = Math.min(time - lastTime, 50);
+    lastTime = time;
 
-  const currentPosition =
-    window.pageYOffset ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop ||
-    0;
-
-  window.scrollTo(0, currentPosition + delta * 0.12);
-
-  const maxScroll =
-    Math.max(
+    const maxScroll = Math.max(
       document.documentElement.scrollHeight,
       document.body.scrollHeight
     ) - window.innerHeight;
 
-  if (currentPosition >= maxScroll - 3) {
-    stopScrolling();
-    return;
-  }
-
-  animationFrame = requestAnimationFrame(scrollStep);
-}
-
-function startScrolling() {
-  stopScrolling();
-
-  if (
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    return;
-  }
-
-  scrolling = true;
-  lastTime = 0;
-  animationFrame = requestAnimationFrame(scrollStep);
-}
-
- async function playMusic() {
-  try {
-    if (!musicStarted) {
-      music.currentTime = 8;
-
-      // انتظري حتى يجهز ملف الصوت للانتقال للثانية 8
-      if (music.readyState < 1) {
-        await new Promise((resolve, reject) => {
-          music.addEventListener("loadedmetadata", resolve, { once: true });
-          music.addEventListener("error", reject, { once: true });
-          music.load();
-        });
-      }
-
-      music.currentTime = 8;
+    if (window.scrollY >= maxScroll - 2) {
+      stopScrolling();
+      return;
     }
 
-    await music.play();
-    musicStarted = true;
-    musicButton.textContent = "♫ إيقاف الموسيقى";
-  } catch (error) {
-    musicButton.textContent = "♫ تشغيل الموسيقى";
-    console.error("تعذر تشغيل الموسيقى أو الانتقال إلى الثانية 8:", error);
+    window.scrollBy(0, delta * 0.12);
+    animationFrame = requestAnimationFrame(scrollStep);
   }
-}
+
+  function startScrolling() {
+    stopScrolling();
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    scrolling = true;
+    lastTime = 0;
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  async function playMusic() {
+    try {
+      if (!musicStarted) {
+        if (music.readyState < 1) {
+          await new Promise((resolve, reject) => {
+            music.addEventListener("loadedmetadata", resolve, { once: true });
+            music.addEventListener("error", reject, { once: true });
+          });
+        }
+
+        music.currentTime = 8;
+      }
+
+      await music.play();
+      musicStarted = true;
+      musicButton.textContent = "♫ إيقاف الموسيقى";
+    } catch (error) {
+      musicButton.textContent = "♫ تشغيل الموسيقى";
+      console.error("تعذر تشغيل الموسيقى:", error);
+    }
   }
 
   openButton.addEventListener("click", async () => {
@@ -189,19 +177,25 @@ function startScrolling() {
     await playMusic();
   });
 
-window.addEventListener("wheel", stopScrolling, { passive: true });
+  window.addEventListener("wheel", stopScrolling, { passive: true });
 
-let touchStartY = 0;
+  window.addEventListener("touchstart", (event) => {
+    lastTouchY = event.touches[0].clientY;
+  }, { passive: true });
 
-window.addEventListener("touchstart", (event) => {
-  touchStartY = event.touches[0].clientY;
-}, { passive: true });
+  window.addEventListener("touchmove", (event) => {
+    if (lastTouchY === null) return;
 
-window.addEventListener("touchmove", (event) => {
-  const currentY = event.touches[0].clientY;
+    const currentY = event.touches[0].clientY;
 
-  if (Math.abs(currentY - touchStartY) > 10) {
-    stopScrolling();
-  }
-}, { passive: true });
+    if (Math.abs(currentY - lastTouchY) > 10) {
+      stopScrolling();
+    }
+
+    lastTouchY = currentY;
+  }, { passive: true });
+
+  window.addEventListener("touchend", () => {
+    lastTouchY = null;
+  }, { passive: true });
 })();
