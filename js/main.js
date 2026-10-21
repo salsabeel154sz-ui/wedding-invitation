@@ -131,18 +131,31 @@ lightbox.addEventListener("click", () => lightbox.close());
     animationFrame = requestAnimationFrame(scrollStep);
   }
 
-  async function playMusic() {
-    try {
-      if (!musicStarted) {
-        music.currentTime = 8;
+ async function playMusic() {
+  try {
+    if (!musicStarted) {
+      music.currentTime = 8;
+
+      // انتظري حتى يجهز ملف الصوت للانتقال للثانية 8
+      if (music.readyState < 1) {
+        await new Promise((resolve, reject) => {
+          music.addEventListener("loadedmetadata", resolve, { once: true });
+          music.addEventListener("error", reject, { once: true });
+          music.load();
+        });
       }
 
-      await music.play();
-      musicStarted = true;
-      musicButton.textContent = "♫ إيقاف الموسيقى";
-    } catch (error) {
-      musicButton.textContent = "♫ تشغيل الموسيقى";
+      music.currentTime = 8;
     }
+
+    await music.play();
+    musicStarted = true;
+    musicButton.textContent = "♫ إيقاف الموسيقى";
+  } catch (error) {
+    musicButton.textContent = "♫ تشغيل الموسيقى";
+    console.error("تعذر تشغيل الموسيقى أو الانتقال إلى الثانية 8:", error);
+  }
+}
   }
 
   openButton.addEventListener("click", async () => {
