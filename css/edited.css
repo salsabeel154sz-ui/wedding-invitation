@@ -68,10 +68,10 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
 }
-/* تكبير عبارة حضوركم تشريف لنا */
-body footer p {
-  font-size: 24px !important;
-  line-height: 1.8;
+/* تكبير عبارة حضوركم تشريف لنا فقط */
+.footer-demo {
+  font-size: 30px !important;
   font-weight: 600;
+  line-height: 1.8;
   text-align: center;
 }
