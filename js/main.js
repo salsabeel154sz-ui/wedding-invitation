@@ -70,4 +70,221 @@ document.querySelectorAll(".gallery-grid img").forEach((img) => {
 });
 
 lightbox.addEventListener("click", () => lightbox.close());
+/* افتتاح الدعوة وتشغيل الموسيقى والتمرير التلقائي */
+(() => {
+  const welcome = document.getElementById("welcome-screen");
+  const openButton = document.getElementById("open-invitation");
+  const music = document.getElementById("wedding-music");
+  const controls = document.getElementById("invitation-controls");
+  const scrollButton = document.getElementById("pause-scroll");
+  const musicButton = document.getElementById("toggle-music");
+
+  if (!welcome || !openButton || !music) return;
+
+  let scrolling = false;
+  let lastTime = 0;
+  let animationFrame = null;
+  let musicStarted = false;
+
+  function stopScrolling() {
+    scrolling = false;
+    if (animationFrame !== null) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+    scrollButton.textContent = "متابعة الحركة";
+  }
+
+  function scrollStep(time) {
+    if (!scrolling) return;
+
+    if (!lastTime) lastTime = time;
+    const delta = Math.min(time - lastTime, 50);
+    lastTime = time;
+
+    window.scrollBy(0, delta * 0.025);
+
+    const atBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 2;
+
+    if (atBottom) {
+      stopScrolling();
+      return;
+    }
+
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  function startScrolling() {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      stopScrolling();
+      return;
+    }
+
+    scrolling = true;
+    lastTime = 0;
+    scrollButton.textContent = "إيقاف الحركة";
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  openButton.addEventListener("click", async () => {
+    welcome.classList.add("is-hidden");
+    controls.hidden = false;
+
+    if (!musicStarted) {
+      try {
+        await music.play();
+        musicStarted = true;
+        musicButton.textContent = "إيقاف الموسيقى";
+      } catch (error) {
+        musicButton.textContent = "تشغيل الموسيقى";
+      }
+    }
+
+    startScrolling();
+  });
+
+  scrollButton.addEventListener("click", () => {
+    if (scrolling) {
+      stopScrolling();
+    } else {
+      startScrolling();
+    }
+  });
+
+  musicButton.addEventListener("click", async () => {
+    if (!music.paused) {
+      music.pause();
+      musicButton.textContent = "تشغيل الموسيقى";
+      return;
+    }
+
+    try {
+      await music.play();
+      musicStarted = true;
+      musicButton.textContent = "إيقاف الموسيقى";
+    } catch (error) {
+      musicButton.textContent = "إعادة المحاولة";
+    }
+  });
+
+  window.addEventListener("wheel", () => {
+    if (scrolling) stopScrolling();
+  }, { passive: true });
+
+  window.addEventListener("touchstart", () => {
+    if (scrolling) stopScrolling();
+  }, { passive: true });
+})();/* افتتاح الدعوة وتشغيل الموسيقى والتمرير التلقائي */
+(() => {
+  const welcome = document.getElementById("welcome-screen");
+  const openButton = document.getElementById("open-invitation");
+  const music = document.getElementById("wedding-music");
+  const controls = document.getElementById("invitation-controls");
+  const scrollButton = document.getElementById("pause-scroll");
+  const musicButton = document.getElementById("toggle-music");
+
+  if (!welcome || !openButton || !music) return;
+
+  let scrolling = false;
+  let lastTime = 0;
+  let animationFrame = null;
+  let musicStarted = false;
+
+  function stopScrolling() {
+    scrolling = false;
+    if (animationFrame !== null) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+    scrollButton.textContent = "متابعة الحركة";
+  }
+
+  function scrollStep(time) {
+    if (!scrolling) return;
+
+    if (!lastTime) lastTime = time;
+    const delta = Math.min(time - lastTime, 50);
+    lastTime = time;
+
+    window.scrollBy(0, delta * 0.025);
+
+    const atBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 2;
+
+    if (atBottom) {
+      stopScrolling();
+      return;
+    }
+
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  function startScrolling() {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      stopScrolling();
+      return;
+    }
+
+    scrolling = true;
+    lastTime = 0;
+    scrollButton.textContent = "إيقاف الحركة";
+    animationFrame = requestAnimationFrame(scrollStep);
+  }
+
+  openButton.addEventListener("click", async () => {
+    welcome.classList.add("is-hidden");
+    controls.hidden = false;
+
+    if (!musicStarted) {
+      try {
+        await music.play();
+        musicStarted = true;
+        musicButton.textContent = "إيقاف الموسيقى";
+      } catch (error) {
+        musicButton.textContent = "تشغيل الموسيقى";
+      }
+    }
+
+    startScrolling();
+  });
+
+  scrollButton.addEventListener("click", () => {
+    if (scrolling) {
+      stopScrolling();
+    } else {
+      startScrolling();
+    }
+  });
+
+  musicButton.addEventListener("click", async () => {
+    if (!music.paused) {
+      music.pause();
+      musicButton.textContent = "تشغيل الموسيقى";
+      return;
+    }
+
+    try {
+      await music.play();
+      musicStarted = true;
+      musicButton.textContent = "إيقاف الموسيقى";
+    } catch (error) {
+      musicButton.textContent = "إعادة المحاولة";
+    }
+  });
+
+  window.addEventListener("wheel", () => {
+    if (scrolling) stopScrolling();
+  }, { passive: true });
+
+  window.addEventListener("touchstart", () => {
+    if (scrolling) stopScrolling();
+  }, { passive: true });
+})();
 
