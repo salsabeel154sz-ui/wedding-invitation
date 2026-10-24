@@ -229,3 +229,111 @@ body select {
   color: var(--wedding-text-purple);
   border-color: #bca4bc;
 }
+
+/* صورة شاشة بداية دعوة الزفاف */
+#welcome-screen.welcome-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100%;
+  overflow: hidden;
+
+  background-image: url("../photo9.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* طبقة خفيفة فوق الصورة لتوضيح الكتابة */
+#welcome-screen .welcome-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(35, 24, 38, 0.30);
+  z-index: 0;
+}
+
+/* الأسماء والتاريخ والزر */
+#welcome-screen .welcome-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* عبارة دعوة زفاف */
+#welcome-screen .welcome-small {
+  font-size: 18px;
+  margin-bottom: 18px;
+  color: #ffffff;
+}
+
+/* اسم العروس */
+#welcome-screen .welcome-content h1 {
+  font-size: clamp(28px, 7vw, 42px);
+  line-height: 1.5;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* علامة & */
+#welcome-screen .welcome-amp {
+  display: block;
+  font-size: 32px;
+  margin: 4px 0;
+  color: #ffffff;
+}
+
+/* اسم العريس */
+#welcome-screen .welcome-content h2 {
+  font-size: clamp(26px, 6vw, 38px);
+  line-height: 1.5;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* تاريخ الزفاف */
+#welcome-screen .welcome-date {
+  font-size: 17px;
+  letter-spacing: 2px;
+  margin: 20px 0 28px;
+  color: #ffffff;
+}
+
+/* زر فتح الدعوة */
+#welcome-screen .open-invitation {
+  display: inline-block;
+  padding: 13px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #715B70;
+  font-size: 17px;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 480px) {
+  #welcome-screen .welcome-content {
+    padding: 20px 14px;
+  }
+
+  #welcome-screen .welcome-small {
+    font-size: 16px;
+  }
+
+  #welcome-screen .welcome-date {
+    font-size: 15px;
+  }
+}
