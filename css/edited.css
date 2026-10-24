@@ -339,5 +339,5 @@ body select {
 }
 /* رفع الكلام والزر للأعلى في شاشة البداية */
 #welcome-screen .welcome-content {
-  transform: translateY(-65px);
+  transform: translateY(-150px);
 }
