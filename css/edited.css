@@ -337,3 +337,7 @@ body select {
     font-size: 15px;
   }
 }
+/* رفع الكلام والزر للأعلى في شاشة البداية */
+#welcome-screen .welcome-content {
+  transform: translateY(-65px);
+}
